@@ -3,15 +3,17 @@ using System.Collections;
 
 public class Enemy : MonoBehaviour
 {
-    [SerializeField]
-    private float timeOffset = 1; // 이동시간 = 거리 * timeOffset
-
-    private Transform[] wayPoints;// 이동 경로 정보
-    private int wayPointCount;    // 이동 경로 개수
-    private int currentIndex = 0; // 현재 목표지점 인덱스
-
-    public void Setup(Transform[] wayPoints)
+    [SerializeField]         
+    private float            timeOffset = 1; // 이동시간 = 거리 * timeOffset
+                             
+    private Transform[]      wayPoints;// 이동 경로 정보
+    private int              wayPointCount;    // 이동 경로 개수
+    private int              currentIndex = 0; // 현재 목표지점 인덱스
+    private EnemySpawner     enemySpawner;        // 적의 삭제를 본인이 하지 않고 EnemySpawner에게 알려서 삭제
+                  
+    public void Setup(EnemySpawner enemySpawner, Transform[] wayPoints)
     {
+        this.enemySpawner = enemySpawner;
         // 적 이동 경로(WayPoints) 정보 설정
         wayPointCount = wayPoints.Length;
         this.wayPoints = new Transform[wayPointCount];
@@ -43,7 +45,7 @@ public class Enemy : MonoBehaviour
             if ( currentIndex < wayPointCount - 1) currentIndex++;
             else
             {
-                Destroy(gameObject);
+                OnDie();
             }
         }
     }
@@ -60,5 +62,12 @@ public class Enemy : MonoBehaviour
 
             yield return null;
         }
+    }
+
+    public void OnDie()
+    {
+        // EnemySpawner 에서 리스트로 적 정보를 관리하기 때문에 Destroy()를 직접하지 않고,
+        // EnemySpawner 에게 본인이 삭제될 때 필요한 처리를 하도록 DestroyEnemy() 메소드 호출
+        enemySpawner.DestroyEnemy(this);
     }
 }
