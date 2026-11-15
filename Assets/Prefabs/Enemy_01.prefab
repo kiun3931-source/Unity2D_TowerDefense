@@ -142,6 +142,7 @@ MonoBehaviour:
   hudPoint: {fileID: 573401921620025141}
   rotator: {fileID: 1518120726515477680}
   timeOffset: 1
+  gold: 10
 --- !u!58 &-5705420492267415798
 CircleCollider2D:
   m_ObjectHideFlags: 0
