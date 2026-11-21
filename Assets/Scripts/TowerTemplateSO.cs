@@ -3,8 +3,9 @@ using UnityEngine;
 [CreateAssetMenu]
 public class TowerTemplateSO : ScriptableObject
 {
-    public GameObject towerPrefab;      // 타워 생성을 위한 프리팹
-    public Weapon[] weapon;             // 레벨별 타워(무기) 정보
+    public GameObject towerPrefab;          // 타워 생성을 위한 프리팹
+    public GameObject followTowerPrefab;    // 마우스를 추적하는 임시 타워 프리팹
+    public Weapon[] weapon;                 // 레벨별 타워(무기) 정보
     [System.Serializable]
     public struct Weapon
     {
