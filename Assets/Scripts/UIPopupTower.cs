@@ -15,6 +15,10 @@ public class UIPopupTower : MonoBehaviour
     [SerializeField]
     private TextMeshProUGUI textLevel;
     [SerializeField]
+    private TextMeshProUGUI textUpgreadeCost;
+    [SerializeField]
+    private TextMeshProUGUI textSellCost;
+    [SerializeField]
     private TowerAttackRange towerAttackRange;
     [SerializeField]
     private Button buttonUpgrade;
@@ -60,17 +64,28 @@ public class UIPopupTower : MonoBehaviour
         if ( currentTower.WeaponType == WeaponType.Cannon || currentTower.WeaponType == WeaponType.Laser)
         {
             imageTower.rectTransform.sizeDelta = new Vector2(88, 59);
-            textDamage.text = $"Damage : {currentTower.Damage}";
+            textDamage.text = $"Damage : {currentTower.Damage}" +
+                              $"+<color=red>{currentTower.AddedDamage:F1}+</color>" ;
         }
         else
         {
             imageTower.rectTransform.sizeDelta = new Vector2(59, 59);
-            textDamage.text = $"Slow : {currentTower.Slow * 100}%";
+            if (currentTower.WeaponType == WeaponType.Slow)
+            {
+                textDamage.text = $"Slow : {currentTower.Slow * 100}%";
+            }
+            else if (currentTower.WeaponType == WeaponType.Buff)
+            {
+                textDamage.text = $"Buff : {currentTower.Buff * 100}%";
+            }
+                
         }
         imageTower.sprite = currentTower.TowerSprite;
         textRate.text = $"Rate : {currentTower.Rate}";
         textRange.text = $"Range : {currentTower.Range}";
         textLevel.text = $"Level : {currentTower.Level}";
+        textUpgreadeCost.text = $"{currentTower.UpgradeCost}";
+        textSellCost.text = $"{currentTower.SellCost}";
 
         // 업그레이드가 불가능해지면 버튼 비활성화
         buttonUpgrade.interactable = currentTower.Level < currentTower.MaxLevel;
