@@ -2,7 +2,7 @@ using UnityEngine;
 using System.Collections;
 using UnityEngine.XR;
 
-public enum WeaponType { Cannon = 0, Laser}
+public enum WeaponType { Cannon = 0, Laser, Slow}
 public enum WeaponState { SearchClosestTarget = 0, TryAttackCannon, TryAttackLaser }
 
 public class TowerWeapon : MonoBehaviour
@@ -39,8 +39,10 @@ public class TowerWeapon : MonoBehaviour
     public float Damage => towerTemplate.weapon[level].damage;
     public float Rate => towerTemplate.weapon[level].rate;
     public float Range => towerTemplate.weapon[level].range;
+    public float Slow => towerTemplate.weapon[level].slow;
     public int Level => level + 1;
     public int MaxLevel => towerTemplate.weapon.Length;
+    public WeaponType WeaponType => weaponType;
 
     public void Setup(EnemySpawner enemySpawner, PlayerGold playerGold, Tile ownerTile)
     {
@@ -51,9 +53,12 @@ public class TowerWeapon : MonoBehaviour
         this.ownerTile = ownerTile;
 
         if (weaponType == WeaponType.Laser) DisableLaser();
-
-        // 첫 상태는 목표를 탐색하는 SearchClosestTarget 으로 설정
-        ChangeState(WeaponState.SearchClosestTarget);
+        // 무기 속성이 Cannon 또는 Laser 일 때
+        if (weaponType == WeaponType.Cannon || weaponType == WeaponType.Laser)
+        {
+            // 첫 상태는 목표를 탐색하는 SearchClosestTarget 으로 설정
+            ChangeState(WeaponState.SearchClosestTarget);
+        }
     }
 
     public void ChangeState(WeaponState newState)
